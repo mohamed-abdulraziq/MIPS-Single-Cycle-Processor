@@ -22,8 +22,6 @@ AI assistance was limited to helping with testbench writing/refinement and forma
 - BEQ branch and J jump control flow.
 - Division-by-zero detection suppresses register write-back.
 
-The editable architecture source is docs/architecture/Phase1_MIPS_Single_Cycle.drawio. Open it with diagrams.net. RTL is the implementation source of truth.
-
 ### RTL modules
 
 | Module | Responsibility |
