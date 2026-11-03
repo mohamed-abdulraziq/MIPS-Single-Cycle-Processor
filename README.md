@@ -105,7 +105,7 @@ run -all
 
 **Previously reported simulation evidence:** 41 instructions loaded, 65 observed cycles, 36 checks, one division-by-zero event, zero errors, and ALL TESTS PASSED. This is historical evidence from the supplied simulation transcript, not a fresh run performed while packaging this repository. A concise record is in docs/simulation_results.md.
 
-## ASIC synthesis — Synopsys Design Compiler
+## ASIC synthesis - Design Compiler
 
 The synthesis flow is in synthesis/ and is configured for:
 
