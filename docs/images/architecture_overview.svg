@@ -32,7 +32,8 @@
 <text class="nodeTitle" x="1915" y="295" text-anchor="middle">Next PC</text><text class="nodeSub" x="1915" y="324" text-anchor="middle">PCNext → PC_in</text><text class="nodeNote" x="1915" y="351" text-anchor="middle">Sequential / BEQ / J</text>
 </g>
 <path class="pc" d="M325 312 H475"/><text class="pcLabel" x="395" y="293" text-anchor="middle">PC[31:0]</text>
-<path class="pc" d="M795 300 H965"/><text class="pcLabel" x="880" y="282" text-anchor="middle">PC+4 / PCBranch</text>
+<path class="pc" d="M795 285 H965"/><text class="pcLabel" x="880" y="270" text-anchor="middle">PC+4</text>
+<path class="pc" d="M795 345 H965"/><text class="pcLabel" x="880" y="366" text-anchor="middle">PCBranch</text>
 <path class="pc" d="M1180 317 H1380"/><text class="pcLabel" x="1280" y="298" text-anchor="middle">PCBrMuxOut</text>
 <path class="pc" d="M1595 317 H1750"/><text class="pcLabel" x="1670" y="298" text-anchor="middle">PCNext</text>
 <path class="pc" d="M635 380 V410 H1487 V370"/><text class="pcLabel" x="1040" y="402" text-anchor="middle">PCJump = {PCPlus4[31:28], Instr[25:0], 2'b00}</text>
