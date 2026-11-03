@@ -101,26 +101,25 @@ Unsupported R-type function codes do not enable register write-back. Writes to r
 
 ## Functional verification and simulation
 
-The self-checking testbench and supplied QuestaSim evidence are documented in [docs/VERIFICATION_RESULTS.md](docs/VERIFICATION_RESULTS.md). This includes the recorded transcript results, waveform evidence, covered scenarios, and execution notes.
+The self-checking testbench and supplied QuestaSim evidence are documented in [verification/VERIFICATION_RESULTS.md](verification/VERIFICATION_RESULTS.md). This includes the recorded transcript results, waveform evidence, covered scenarios, and execution notes.
 
 ## ASIC synthesis
 
-The curated Synopsys Design Compiler results, including timing, area, power estimates, mapped-memory observations, and limitations, are documented in [docs/SYNTHESIS_RESULTS.md](docs/SYNTHESIS_RESULTS.md).
+The curated Synopsys Design Compiler results, including timing, area, power estimates, mapped-memory observations, and limitations, are documented in [synthesis/SYNTHESIS_RESULTS.md](synthesis/SYNTHESIS_RESULTS.md).
 
 ## Repository structure
 
 ~~~text
 .
 ├── rtl/                         # Synthesizable SystemVerilog
-├── verification/                 # Self-checking testbench and Questa scripts
+├── verification/
+│   ├── tb_MIPS_top.sv            # Self-checking testbench
+│   └── VERIFICATION_RESULTS.md  # Verification and simulation results
 ├── synthesis/
-│   ├── syn_script_MIPS.tcl       # Design Compiler flow
-│   └── cons_MIPS.tcl             # Timing constraints
+│   └── SYNTHESIS_RESULTS.md     # Synthesis results
 └── docs/
     ├── images/                   # Architecture, schematic, transcript, waveform
-    ├── architecture/             # Architecture notes
-    ├── SYNTHESIS_RESULTS.md      # Curated synthesis results
-    └── VERIFICATION_RESULTS.md   # Testbench and simulation evidence
+    └── architecture/             # Architecture notes
 ~~~
 
 ## Design ownership and AI assistance

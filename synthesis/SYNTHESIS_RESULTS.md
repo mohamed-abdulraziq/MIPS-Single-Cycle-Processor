@@ -70,7 +70,7 @@ The report used low analysis effort and a vectorless activity estimate. It warns
 
 ## Design Vision schematic
 
-![Design Vision synthesized schematic](images/design_vision_schematic.webp)
+![Design Vision synthesized schematic](../docs/images/design_vision_schematic.webp)
 
 The supplied screenshot is a zoomed-out schematic-window capture. It is not a physical layout, place-and-route result, or sign-off image.
 

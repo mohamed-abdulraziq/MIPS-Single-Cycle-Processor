@@ -2,13 +2,13 @@
 
 ## Testbench and execution
 
-The active self-checking testbench module is `tb_MIPS_extensive`, located in [verification/tb_MIPS_top.sv](../verification/tb_MIPS_top.sv). It loads a 41-instruction program into instruction memory, releases reset, and observes the processor over 65 cycles.
+The active self-checking testbench module is `tb_MIPS_extensive`, located in [tb_MIPS_top.sv](tb_MIPS_top.sv). It loads a 41-instruction program into instruction memory, releases reset, and observes the processor over 65 cycles.
 
 The testbench checks register-file and data-memory state against expected values and monitors divide-by-zero behavior and register-write suppression. Program storage capacity is 42 words; the generated program contains 41 instructions, with the final instruction used as a self-loop.
 
 ## Supplied simulation transcript
 
-![QuestaSim transcript](images/simulation_transcript.webp)
+![QuestaSim transcript](../docs/images/simulation_transcript.webp)
 
 | Metric | Recorded result |
 |---|---:|
@@ -23,7 +23,7 @@ These values are transcribed from the supplied transcript screenshot. The test w
 
 ## Waveform evidence
 
-![QuestaSim waveform](images/questa_waveform.webp)
+![QuestaSim waveform](../docs/images/questa_waveform.webp)
 
 The waveform screenshot shows the clock/reset, instruction fetch/program flow, control outputs, register-file read/write ports, ALSU operands and result, divide-by-zero indication, and data-memory signals.
 
@@ -40,18 +40,6 @@ The waveform screenshot shows the clock/reset, instruction fetch/program flow, c
 - Jump target selection and skipped instruction behavior.
 - Final PC self-loop behavior.
 
-## Run instructions
+## Reproducing the simulation
 
-From the repository root in QuestaSim / ModelSim:
-
-~~~tcl
-do verification/run.do
-~~~
-
-For an interactive waveform session, compile the source list from `verification/run.do` and then run:
-
-~~~tcl
-vsim work.tb_MIPS_extensive
-do verification/wave.do
-run -all
-~~~
+The repository keeps the self-checking testbench source in this directory without simulator-specific run scripts. Compile the RTL source files under `rtl/` together with `tb_MIPS_top.sv` in QuestaSim / ModelSim, then run the `tb_MIPS_extensive` testbench. The transcript and waveform above are supplied evidence from the recorded run; they were not regenerated during repository packaging.

@@ -1,8 +1,8 @@
-
 # Documentation
 
-- Architecture overview and schematic images: images/
-- Curated synthesis results: SYNTHESIS_RESULTS.md
-- Simulation and testbench evidence: VERIFICATION_RESULTS.md
+- Architecture overview and schematic images: [images/](images/)
+- Architecture notes: [architecture/](architecture/)
 
-The root README embeds the architecture SVG, Design Vision schematic screenshot, QuestaSim transcript, and waveform screenshot. Raw synthesis reports are generated locally and excluded from the public repository.
+Project results are maintained with their corresponding engineering folders:
+- [Synthesis results](../synthesis/SYNTHESIS_RESULTS.md)
+- [Verification and simulation results](../verification/VERIFICATION_RESULTS.md)
