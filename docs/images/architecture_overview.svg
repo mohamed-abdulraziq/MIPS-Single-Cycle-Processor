@@ -1,61 +1,76 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1000" viewBox="0 0 1800 1000">
+<svg xmlns="http://www.w3.org/2000/svg" width="2200" height="1370" viewBox="0 0 2200 1370">
 <defs>
- <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b1220"/><stop offset="1" stop-color="#14243a"/></linearGradient>
- <linearGradient id="card" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#203a57"/><stop offset="1" stop-color="#152a42"/></linearGradient>
- <filter id="shadow" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#000" flood-opacity=".28"/></filter>
- <marker id="arr" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#80cfff"/></marker>
- <style>
- .title{font:700 42px Arial,sans-serif;fill:#f7fbff}.sub{font:400 20px Arial,sans-serif;fill:#a9bfd5}
- .head{font:700 21px Arial,sans-serif;fill:#f5f8fc}.mod{font:16px Arial,sans-serif;fill:#c1d5e8}.desc{font:15px Arial,sans-serif;fill:#a9bfd5}
- .small{font:15px Arial,sans-serif;fill:#d6e4f0}.wire{fill:none;stroke:#80cfff;stroke-width:4;marker-end:url(#arr);stroke-linecap:round}
- .panel{fill:#13273d;stroke:#3c6488;stroke-width:2}
- </style>
-</defs>
-<rect width="1800" height="1000" rx="28" fill="url(#bg)"/>
-<text x="70" y="78" class="title">MIPS Single-Cycle Processor</text>
-<text x="70" y="116" class="sub">32-bit datapath · instruction decode · execution · memory access · write-back</text>
-<g filter="url(#shadow)">
- <rect x="55" y="230" width="185" height="155" rx="18" fill="url(#card)" stroke="#70b9e8" stroke-width="2.5"/>
- <rect x="265" y="230" width="185" height="155" rx="18" fill="url(#card)" stroke="#70b9e8" stroke-width="2.5"/>
- <rect x="475" y="230" width="185" height="155" rx="18" fill="url(#card)" stroke="#70b9e8" stroke-width="2.5"/>
- <rect x="685" y="230" width="185" height="155" rx="18" fill="url(#card)" stroke="#70b9e8" stroke-width="2.5"/>
- <rect x="895" y="230" width="185" height="155" rx="18" fill="url(#card)" stroke="#70b9e8" stroke-width="2.5"/>
- <rect x="1105" y="230" width="185" height="155" rx="18" fill="url(#card)" stroke="#70b9e8" stroke-width="2.5"/>
- <rect x="1315" y="230" width="185" height="155" rx="18" fill="url(#card)" stroke="#70b9e8" stroke-width="2.5"/>
- <rect x="1525" y="230" width="220" height="155" rx="18" fill="url(#card)" stroke="#70b9e8" stroke-width="2.5"/>
+<linearGradient id="header" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#11243a"/><stop offset="1" stop-color="#1c3a55"/></linearGradient>
+<linearGradient id="blue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef7ff"/><stop offset="1" stop-color="#dcecff"/></linearGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff8e7"/><stop offset="1" stop-color="#ffedc5"/></linearGradient>
+<linearGradient id="green" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#edfaf3"/><stop offset="1" stop-color="#d7f2e3"/></linearGradient>
+<filter id="shadow" x="-15%" y="-20%" width="130%" height="145%"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#25384a" flood-opacity=".12"/></filter>
+<marker id="dataArrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0 0L11 5.5L0 11Z" fill="#2878b9"/></marker>
+<marker id="pcArrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0 0L11 5.5L0 11Z" fill="#13865b"/></marker>
+<style>
+.bg{fill:#f3f6fa}.panel{fill:#fff;stroke:#d8e1eb;stroke-width:2}.panelTitle{font:700 20px Arial,sans-serif;letter-spacing:1.2px;fill:#506477}
+.mainTitle{font:700 38px Arial,sans-serif;fill:#fff}.subTitle{font:400 18px Arial,sans-serif;fill:#d6e5f2}
+.node{stroke-width:2;filter:url(#shadow)}.nodeTitle{font:700 21px Arial,sans-serif;fill:#142d43}.nodeSub{font:400 16px Arial,sans-serif;fill:#516a80}.nodeNote{font:600 14px Arial,sans-serif;fill:#3d5870}
+.data{fill:none;stroke:#2878b9;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;marker-end:url(#dataArrow)}
+.pc{fill:none;stroke:#13865b;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;marker-end:url(#pcArrow)}
+.label{font:600 15px Arial,sans-serif;fill:#31536f}.pcLabel{font:600 15px Arial,sans-serif;fill:#126f4c}
+.chip{fill:#f4f7fa;stroke:#d9e2ec;stroke-width:1.5}.chipText{font:600 14px Arial,sans-serif;fill:#42596e}
+</style></defs>
+<rect class="bg" width="2200" height="1370"/><rect width="2200" height="135" fill="url(#header)"/>
+<text x="70" y="59" class="mainTitle">MIPS Single-Cycle Processor</text><text x="72" y="94" class="subTitle">RTL architecture overview · 32-bit datapath · instruction decode · execute · memory · write-back</text>
+<rect class="panel" x="55" y="165" width="2090" height="285" rx="22"/><text class="panelTitle" x="90" y="205">01  ·  PROGRAM COUNTER &amp; CONTROL FLOW</text>
+<g>
+<rect class="node" x="105" y="255" width="220" height="115" rx="14" fill="url(#green)" stroke="#5cae89"/>
+<text class="nodeTitle" x="215" y="296" text-anchor="middle">PC Register</text><text class="nodeSub" x="215" y="326" text-anchor="middle">PC_cntrl</text><text class="nodeNote" x="215" y="350" text-anchor="middle">32-bit state · async reset</text>
+<rect class="node" x="475" y="245" width="320" height="135" rx="14" fill="url(#blue)" stroke="#75a9d6"/>
+<text class="nodeTitle" x="635" y="284" text-anchor="middle">Next-Address Generation</text><text class="nodeSub" x="635" y="315" text-anchor="middle">PC_plus4</text><text class="nodeNote" x="635" y="342" text-anchor="middle">PC+4 · branch target · jump target</text>
+<rect class="node" x="965" y="265" width="215" height="105" rx="14" fill="url(#gold)" stroke="#d7ae58"/>
+<text class="nodeTitle" x="1072" y="306" text-anchor="middle">Branch MUX</text><text class="nodeSub" x="1072" y="336" text-anchor="middle">PCSrc = Branch &amp; Zero</text>
+<rect class="node" x="1380" y="265" width="215" height="105" rx="14" fill="url(#gold)" stroke="#d7ae58"/>
+<text class="nodeTitle" x="1487" y="306" text-anchor="middle">Jump MUX</text><text class="nodeSub" x="1487" y="336" text-anchor="middle">Jump select</text>
+<rect class="chip" x="1750" y="258" width="330" height="118" rx="13"/>
+<text class="nodeTitle" x="1915" y="295" text-anchor="middle">Next PC</text><text class="nodeSub" x="1915" y="324" text-anchor="middle">PCNext → PC_in</text><text class="nodeNote" x="1915" y="351" text-anchor="middle">Sequential / BEQ / J</text>
 </g>
-<g text-anchor="middle">
- <text x="147" y="278" class="head">PC Register</text><text x="147" y="312" class="mod">PC_cntrl</text><text x="147" y="346" class="desc">32-bit state</text>
- <text x="357" y="278" class="head">Instruction Memory</text><text x="357" y="312" class="mod">instruction_mem</text><text x="357" y="346" class="desc">Byte-wide · 32-bit fetch</text>
- <text x="567" y="278" class="head">Control Unit</text><text x="567" y="312" class="mod">control_unit</text><text x="567" y="346" class="desc">Opcode / funct decode</text>
- <text x="777" y="278" class="head">Register File</text><text x="777" y="312" class="mod">Reg_file</text><text x="777" y="346" class="desc">32 × 32 · 2R / 1W</text>
- <text x="987" y="278" class="head">Operand MUX</text><text x="987" y="312" class="mod">MUX</text><text x="987" y="346" class="desc">Register / immediate</text>
- <text x="1197" y="278" class="head">ALSU</text><text x="1197" y="312" class="mod">ALSU</text><text x="1197" y="346" class="desc">13 operations</text>
- <text x="1407" y="278" class="head">Data Memory</text><text x="1407" y="312" class="mod">Data_mem</text><text x="1407" y="346" class="desc">Byte-wide · 32-bit access</text>
- <text x="1635" y="278" class="head">Write-Back MUX</text><text x="1635" y="312" class="mod">MUX</text><text x="1635" y="346" class="desc">ALSU / memory result</text>
+<path class="pc" d="M325 312 H475"/><text class="pcLabel" x="395" y="293" text-anchor="middle">PC[31:0]</text>
+<path class="pc" d="M795 300 H965"/><text class="pcLabel" x="880" y="282" text-anchor="middle">PC+4 / PCBranch</text>
+<path class="pc" d="M1180 317 H1380"/><text class="pcLabel" x="1280" y="298" text-anchor="middle">PCBrMuxOut</text>
+<path class="pc" d="M1595 317 H1750"/><text class="pcLabel" x="1670" y="298" text-anchor="middle">PCNext</text>
+<path class="pc" d="M635 380 V410 H1487 V370"/><text class="pcLabel" x="1040" y="402" text-anchor="middle">PCJump = {PCPlus4[31:28], Instr[25:0], 2'b00}</text>
+<path class="pc" d="M1915 258 V225 H215 V255"/><text class="pcLabel" x="1080" y="218" text-anchor="middle">Feedback to PC register</text>
+<rect class="panel" x="55" y="485" width="2090" height="770" rx="22"/><text class="panelTitle" x="90" y="527">02  ·  INSTRUCTION DECODE, EXECUTION &amp; WRITE-BACK</text>
+<g>
+<rect class="node" x="90" y="725" width="245" height="150" rx="14" fill="url(#blue)" stroke="#75a9d6"/>
+<text class="nodeTitle" x="212" y="768" text-anchor="middle">Instruction Memory</text><text class="nodeSub" x="212" y="800" text-anchor="middle">instruction_mem</text><text class="nodeNote" x="212" y="829" text-anchor="middle">8-bit storage · 32-bit fetch</text><text class="nodeNote" x="212" y="852" text-anchor="middle">asynchronous read</text>
+<rect class="node" x="430" y="575" width="285" height="145" rx="14" fill="url(#gold)" stroke="#d7ae58"/>
+<text class="nodeTitle" x="572" y="618" text-anchor="middle">Control Unit</text><text class="nodeSub" x="572" y="649" text-anchor="middle">control_unit</text><text class="nodeNote" x="572" y="678" text-anchor="middle">Opcode + Funct decode</text><text class="nodeNote" x="572" y="700" text-anchor="middle">Branch · Jump · datapath selects</text>
+<rect class="node" x="760" y="755" width="300" height="175" rx="14" fill="url(#blue)" stroke="#75a9d6"/>
+<text class="nodeTitle" x="910" y="801" text-anchor="middle">Register File</text><text class="nodeSub" x="910" y="833" text-anchor="middle">Reg_file</text><text class="nodeNote" x="910" y="862" text-anchor="middle">32 × 32-bit · 2 read ports</text><text class="nodeNote" x="910" y="887" text-anchor="middle">1 write port · R0 hardwired to zero</text><text class="nodeNote" x="910" y="912" text-anchor="middle">RD1 / RD2 / WD3</text>
+<rect class="node" x="1120" y="1000" width="245" height="115" rx="14" fill="url(#blue)" stroke="#75a9d6"/>
+<text class="nodeTitle" x="1242" y="1041" text-anchor="middle">Sign Extension</text><text class="nodeSub" x="1242" y="1070" text-anchor="middle">sign_ext</text><text class="nodeNote" x="1242" y="1094" text-anchor="middle">16-bit immediate → 32-bit</text>
+<rect class="node" x="1130" y="770" width="190" height="125" rx="14" fill="url(#gold)" stroke="#d7ae58"/>
+<text class="nodeTitle" x="1225" y="814" text-anchor="middle">ALUSrc MUX</text><text class="nodeSub" x="1225" y="844" text-anchor="middle">RD2 / SignImm</text><text class="nodeNote" x="1225" y="872" text-anchor="middle">ALUSrc select</text>
+<rect class="node" x="1415" y="755" width="255" height="175" rx="14" fill="url(#green)" stroke="#5cae89"/>
+<text class="nodeTitle" x="1542" y="801" text-anchor="middle">ALSU</text><text class="nodeSub" x="1542" y="833" text-anchor="middle">ALSU</text><text class="nodeNote" x="1542" y="862" text-anchor="middle">13 arithmetic / logic / compare ops</text><text class="nodeNote" x="1542" y="887" text-anchor="middle">Zero · Division_Error</text><text class="nodeNote" x="1542" y="912" text-anchor="middle">ALUResult[31:0]</text>
+<rect class="node" x="1760" y="955" width="230" height="145" rx="14" fill="url(#blue)" stroke="#75a9d6"/>
+<text class="nodeTitle" x="1875" y="997" text-anchor="middle">Data Memory</text><text class="nodeSub" x="1875" y="1028" text-anchor="middle">Data_mem</text><text class="nodeNote" x="1875" y="1057" text-anchor="middle">8-bit storage · 32-bit access</text><text class="nodeNote" x="1875" y="1080" text-anchor="middle">async read · sync write</text>
+<rect class="node" x="1915" y="735" width="190" height="135" rx="14" fill="url(#gold)" stroke="#d7ae58"/>
+<text class="nodeTitle" x="2010" y="779" text-anchor="middle">Write-Back MUX</text><text class="nodeSub" x="2010" y="810" text-anchor="middle">ALUResult / ReadData</text><text class="nodeNote" x="2010" y="840" text-anchor="middle">MemtoReg select</text>
 </g>
-<!-- One simple left-to-right instruction/data path -->
-<path class="wire" d="M240 307H265"/><path class="wire" d="M450 307H475"/>
-<path class="wire" d="M660 307H685"/><path class="wire" d="M870 307H895"/>
-<path class="wire" d="M1080 307H1105"/><path class="wire" d="M1290 307H1315"/>
-<path class="wire" d="M1500 307H1525"/>
-<!-- Dedicated feedback path, routed well below the main chain -->
-<path class="wire" d="M1635 385V485H777V385"/>
-<text x="1205" y="470" class="desc" text-anchor="middle">Register write-back feedback</text>
-<!-- Supporting blocks: descriptive, intentionally separated from datapath wiring -->
-<text x="70" y="585" class="head">Supporting logic</text>
-<g filter="url(#shadow)">
- <rect x="70" y="620" width="390" height="190" rx="18" class="panel"/>
- <rect x="495" y="620" width="390" height="190" rx="18" class="panel"/>
- <rect x="920" y="620" width="390" height="190" rx="18" class="panel"/>
- <rect x="1345" y="620" width="390" height="190" rx="18" class="panel"/>
-</g>
-<g text-anchor="middle">
- <text x="265" y="672" class="head">Next-PC Logic</text><text x="265" y="710" class="mod">PC_plus4 · PC_cntrl</text><text x="265" y="752" class="desc">PC + 4 · BEQ branch target</text><text x="265" y="778" class="desc">J jump target selection</text>
- <text x="690" y="672" class="head">Immediate Generation</text><text x="690" y="710" class="mod">sign_ext</text><text x="690" y="752" class="desc">16-bit immediate extended</text><text x="690" y="778" class="desc">to 32-bit operand</text>
- <text x="1115" y="672" class="head">Control Signals</text><text x="1115" y="710" class="mod">Generated by control_unit</text><text x="1115" y="752" class="desc">RegWrite · ALUControl</text><text x="1115" y="778" class="desc">MemWrite · Branch · Jump</text>
- <text x="1540" y="672" class="head">Execution Details</text><text x="1540" y="710" class="mod">ALSU / Data path</text><text x="1540" y="752" class="desc">Zero supports BEQ decision</text><text x="1540" y="778" class="desc">Division_Error qualifies RegWrite</text>
-</g>
-<line x1="80" y1="885" x2="155" y2="885" stroke="#80cfff" stroke-width="4"/><text x="175" y="891" class="small">Main datapath / data flow</text>
-<text x="80" y="945" class="desc">High-level block view. Supporting logic is separated for readability; exact connectivity and behavior are defined by the RTL.</text>
+<path class="data" d="M105 370 V620 H212 V725"/><text class="label" x="225" y="606">PC_Add</text>
+<path class="data" d="M335 750 H370 V645 H430"/><text class="label" x="395" y="627">Opcode / Funct</text>
+<path class="data" d="M335 825 H760"/><text class="label" x="545" y="806" text-anchor="middle">rs / rt / rd fields</text>
+<path class="data" d="M212 875 V1135 H1242 V1115"/><text class="label" x="720" y="1117" text-anchor="middle">Immediate[15:0]</text>
+<path class="data" d="M910 755 V725 H1542 V755"/><text class="label" x="1225" y="708" text-anchor="middle">RD1 → SrcA</text>
+<path class="data" d="M1060 865 H1130"/><text class="label" x="1094" y="846" text-anchor="middle">RD2</text>
+<path class="data" d="M1365 1057 H1390 V920 H1225 V895"/><text class="label" x="1400" y="1038">SignImm</text>
+<path class="data" d="M1320 832 H1415"/><text class="label" x="1368" y="812" text-anchor="middle">SrcB</text>
+<path class="data" d="M1670 850 H1715 V1025 H1760"/><text class="label" x="1728" y="1005">Address</text>
+<path class="data" d="M1670 790 H1715 V660 H2010 V735"/><text class="label" x="1825" y="642" text-anchor="middle">ALUResult bypass</text>
+<path class="data" d="M1990 1025 H2110 V900 H2010 V870"/><text class="label" x="2072" y="1005" text-anchor="middle">ReadData</text>
+<path class="data" d="M910 930 V1180 H1875 V1100"/><text class="label" x="1400" y="1162" text-anchor="middle">RD2 → memory write data (WD)</text>
+<path class="data" d="M2105 802 H2160 V1220 H910 V930"/><text class="label" x="1550" y="1203" text-anchor="middle">Write-back result → WD3</text>
+<rect class="chip" x="90" y="1285" width="480" height="52" rx="12"/><text class="chipText" x="112" y="1318">Blue: instruction / operand / memory data</text>
+<rect class="chip" x="590" y="1285" width="480" height="52" rx="12"/><text class="chipText" x="612" y="1318">Green: PC and next-address flow</text>
+<rect class="chip" x="1090" y="1285" width="480" height="52" rx="12"/><text class="chipText" x="1112" y="1318">Gold: decoded control selection</text>
+<rect class="chip" x="1590" y="1285" width="510" height="52" rx="12"/><text class="chipText" x="1612" y="1318">RTL source defines exact behavior</text>
 </svg>

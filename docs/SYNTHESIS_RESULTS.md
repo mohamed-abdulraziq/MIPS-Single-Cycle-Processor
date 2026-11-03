@@ -1,53 +1,60 @@
-# ASIC Synthesis Results
 
-## Evidence and configuration
+# Synthesis Results Summary
 
-This analysis is based on the user-supplied Synopsys Design Compiler K-2015.06 log and reports. The reports identify MIPI_Single_cyc_top_IMEM_DEPTH256_DMEM_DEPTH64 and a November 4, 2026 run.
+## Run configuration
 
 | Parameter | Recorded value |
 |---|---|
+| Tool | Synopsys Design Compiler K-2015.06 |
 | Top module | MIPI_Single_cyc_top |
-| IMEM depth | 256 bytes |
-| DMEM depth | 64 bytes |
-| Clock period | 166.7 ns (~6.0 MHz) |
-| Compile | compile -map_effort medium |
+| Elaborated memories | IMEM = 256 bytes; DMEM = 64 bytes |
+| Clock constraint | 166.7 ns (approximately 6.0 MHz) |
+| Compile setting | compile -map_effort medium |
 | Target library | TSMC CL013G RVT SS, 1.08 V, 125 °C |
-| Linked libraries | SS, TT and FF; FF associated as minimum library |
 
-This is one synthesis configuration. SS is the target mapping library; FF is associated for minimum-delay analysis. It is not three independent corner runs.
+This is a pre-layout synthesis result for one stated configuration. The 166.7 ns period is the applied constraint, not a measured maximum operating frequency.
 
-## Timing
+## Timing summary
 
 | Metric | Result |
 |---|---:|
-| Clock constraint | 166.70 ns |
 | Critical path length | 133.02 ns |
 | Worst setup slack | +0.040 ns |
 | Total negative slack | 0.00 ns |
 | Setup violating paths | 0 |
 | Hold violations in QoR summary | 0 |
-| Lowest slack among 10 displayed hold paths | +0.294 ns |
+| Lowest slack among the displayed hold paths | +0.294 ns |
 
-The worst setup path starts at u_pc/PC_out_reg_2_ and ends at ALUResult_out[31]. Its reported data arrival is 133.020 ns, required time 133.060 ns, and slack +0.040 ns. The detailed report shows instruction-memory logic, register-file read logic, and the divider u_alu/div_29 on the path.
+The worst setup path starts at u_pc/PC_out_reg_2_ and ends at ALUResult_out[31]. The path passes through instruction-memory read logic, register-file read logic, and the divider implementation inside the ALSU.
 
-**Interpretation:** the slack is positive but extremely small. The design meets the supplied 166.7 ns constraint with little margin.
+**Interpretation:** the design meets the supplied 166.7 ns constraint with only +0.040 ns of setup margin. This is a very small margin and is not evidence of a 50 MHz implementation or post-route timing closure.
 
-## Area
+## Area summary
 
-| Hierarchical block | Cell area (library units) | Share |
+| Metric | Result |
+|---|---:|
+| Total mapped cell area | 358,855.85 library area units |
+| Combinational area | 239,692.62 library area units |
+| Non-combinational area | 119,163.24 library area units |
+| Buffer / inverter area | 16,729.14 library area units |
+| Mapped cells in area report | 25,761 |
+| Memory macros / black boxes | 0 |
+
+### Largest hierarchical contributors
+
+| Block | Cell area (library units) | Share of total |
 |---|---:|---:|
-| Instruction memory (u_imem) | 186,734.06 | 52.0% |
-| ALSU (u_alu) | 65,854.02 | 18.4% |
-| Data memory (u_dmem) | 51,764.21 | 14.4% |
-| Register file (u_rf) | 49,932.09 | 13.9% |
-| PC calculation (u_pc_calc) | 1,416.75 | 0.4% |
-| PC register (u_pc) | 1,086.09 | 0.3% |
-| Control unit (u_ctrl) | 271.82 | 0.1% |
-| **Total** | **358,855.85** | **100%** |
+| Instruction memory | 186,734.06 | 52.0% |
+| ALSU | 65,854.02 | 18.4% |
+| Data memory | 51,764.21 | 14.4% |
+| Register file | 49,932.09 | 13.9% |
+| PC calculation | 1,416.75 | 0.4% |
+| PC register | 1,086.09 | 0.3% |
+| Control unit | 271.82 | 0.1% |
 
-The instruction and data memories together account for approximately 66.4% of mapped area. The reports show zero memory macros / black boxes; the RTL byte arrays were mapped into standard-cell logic, not foundry SRAM macros.
+The instruction and data memories together represent approximately 66.4% of mapped area. The synthesis report shows zero memory macros / black boxes, so the RTL byte arrays were mapped into standard-cell logic rather than SRAM macros.
 
-Within the ALSU, the divider contributes 41,989.36 library area units (11.7% of total design area), while the multiplier contributes 17,323.38 (4.8%). Library area units must not be interpreted as µm² without the library's area definition.
+Within the ALSU, the divider contributes 41,989.36 library area units (11.7% of total design area), while the multiplier contributes 17,323.38 (4.8%). Library area units are technology-library-dependent; they must not be interpreted as square micrometres without the library's area definition.
 
 ## Power estimate
 
@@ -59,18 +66,30 @@ Within the ALSU, the divider contributes 41,989.36 library area units (11.7% of 
 | Cell leakage power | 245.2198 µW |
 | **Total reported power** | **0.8376 mW** |
 
-The report used low analysis effort and a vectorless activity estimate. It warns that primary inputs and sequential outputs are unannotated. No representative SAIF activity annotation is included. This is a synthesis estimate, not measured silicon power or workload-specific power.
+The report used low analysis effort and a vectorless activity estimate. It warns that primary inputs and sequential outputs are unannotated; no representative SAIF activity annotation is included. This is an estimate, not measured silicon power or workload-specific power.
 
+## Design-check findings
+
+| Check counter | Before mapping | After mapping |
+|---|---:|---:|
+| Unconnected ports (LINT-28) | 26 | 274 |
+| Feedthrough (LINT-29) | 58 | 47 |
+| Shorted outputs (LINT-31) | 21 | 20 |
+| Constant outputs (LINT-52) | 2 | 2 |
+| Unloaded nets (LINT-2) | Not listed in pre-map summary | 66 |
+
+The post-map checks still report 274 unconnected ports and 66 unloaded nets. The compile log also records 116 potential design problems and a high-fanout warning on u_dmem/CLK with 3,616 loads. These are Design Compiler check findings, not functional simulation failures, but they mean the run should not be described as a clean sign-off result.
 
 ## Design Vision schematic
 
-![Design Vision schematic](images/design_vision_schematic.webp)
+![Design Vision synthesized schematic](images/design_vision_schematic.webp)
 
-The supplied capture is a zoomed-out synthesized schematic-window screenshot. It is not a physical layout, place-and-route result, or sign-off image.
-
-
-The proprietary technology libraries are not redistributed. The constraints are the supplied initial interface assumptions, not constraints derived from a formal external interface specification.
+The supplied screenshot is a zoomed-out schematic-window capture. It is not a physical layout, place-and-route result, or sign-off image.
 
 ## Scope and limitations
 
-This evidence demonstrates RTL elaboration, technology mapping, and Design Compiler report generation for the stated setup. It does not demonstrate place-and-route, clock-tree synthesis, extracted-parasitic STA, DRC/LVS closure, GDSII generation, fabrication, or silicon measurement.
+- Results are from synthesis only; no place-and-route, clock-tree synthesis, extracted-parasitic STA, DRC/LVS closure, GDSII generation, or silicon measurement is claimed.
+- The power result is vectorless and lacks representative switching activity.
+- The reported memories mapped to standard cells, not SRAM macros.
+- Setup slack is positive but very small under the applied clock constraint.
+- Raw report files are generated locally when the Design Compiler script runs and are intentionally excluded from the public repository.

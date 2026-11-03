@@ -1,13 +1,18 @@
-# ASIC synthesis
 
-Run from the repository root after updating LIB_DIR in syn_script_MIPS.tcl to the location of the licensed TSMC .db libraries:
+# ASIC Synthesis
+
+The Design Compiler flow is launched from the repository root.
+
+1. Set LIB_DIR in syn_script_MIPS.tcl to the local directory containing the licensed TSMC .db files.
+2. Confirm that the configured library files exist and that BUFX2M is present in the selected library.
+3. Run:
 
 ~~~bash
-dc_shell -f synthesis/syn_script_MIPS.tcl | tee synthesis/reports/syn_MIPS.log
+dc_shell -f synthesis/syn_script_MIPS.tcl
 ~~~
 
-The supplied run uses a 166.7 ns clock constraint, IMEM_DEPTH=256 bytes, DMEM_DEPTH=64 bytes, and compile -map_effort medium.
+The supplied run used a 166.7 ns clock constraint, IMEM_DEPTH=256 bytes, DMEM_DEPTH=64 bytes, and compile -map_effort medium.
 
-The reports folder contains the raw area, cell-reference, QoR, hold, power, pre-map/post-map design-check reports, and the full synthesis log. A concise worst-setup-path excerpt is also provided; the complete setup report is generated again when the flow is rerun.
+Design Compiler report files are written to the local synthesis/reports/ folder for engineering inspection. The folder is intentionally ignored by Git and is not part of the public repository. The public summary is in docs/SYNTHESIS_RESULTS.md.
 
-See [docs/SYNTHESIS_RESULTS.md](../docs/SYNTHESIS_RESULTS.md) for detailed interpretation and limitations. Proprietary .db libraries are not redistributed.
+The proprietary technology libraries are not redistributed. This is a synthesis flow; it does not include place-and-route, extracted-parasitic STA, DRC, or LVS.

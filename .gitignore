@@ -9,5 +9,5 @@ vsim.wlf
 # Logs and generated synthesis outputs
 *.log
 synthesis/results/*
-synthesis/reports/*
+synthesis/reports/
 synthesis/MIPS_SINGLE_CYC.svf
