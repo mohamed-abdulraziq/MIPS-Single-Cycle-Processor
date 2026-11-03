@@ -103,6 +103,10 @@ Unsupported R-type function codes do not enable register write-back. Writes to r
 
 The self-checking testbench and supplied QuestaSim evidence are documented in [verification/VERIFICATION_RESULTS.md](verification/VERIFICATION_RESULTS.md). This includes the recorded transcript results, waveform evidence, covered scenarios, and execution notes.
 
+![QuestaSim transcript](docs/images/simulation_transcript.png)
+
+![QuestaSim waveform](docs/images/questa_waveform.png)
+
 ## ASIC synthesis
 
 The curated Synopsys Design Compiler results, including timing, area, power estimates, mapped-memory observations, and limitations, are documented in [synthesis/SYNTHESIS_RESULTS.md](synthesis/SYNTHESIS_RESULTS.md).

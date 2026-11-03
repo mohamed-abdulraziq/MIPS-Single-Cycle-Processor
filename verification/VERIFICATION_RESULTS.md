@@ -8,7 +8,7 @@ The testbench checks register-file and data-memory state against expected values
 
 ## Supplied simulation transcript
 
-![QuestaSim transcript](../docs/images/simulation_transcript.webp)
+![QuestaSim transcript](../docs/images/simulation_transcript.png)
 
 | Metric | Recorded result |
 |---|---:|
@@ -23,7 +23,7 @@ These values are transcribed from the supplied transcript screenshot. The test w
 
 ## Waveform evidence
 
-![QuestaSim waveform](../docs/images/questa_waveform.webp)
+![QuestaSim waveform](../docs/images/questa_waveform.png)
 
 The waveform screenshot shows the clock/reset, instruction fetch/program flow, control outputs, register-file read/write ports, ALSU operands and result, divide-by-zero indication, and data-memory signals.
 
