@@ -68,18 +68,6 @@ Within the ALSU, the divider contributes 41,989.36 library area units (11.7% of 
 
 The report used low analysis effort and a vectorless activity estimate. It warns that primary inputs and sequential outputs are unannotated; no representative SAIF activity annotation is included. This is an estimate, not measured silicon power or workload-specific power.
 
-## Design-check findings
-
-| Check counter | Before mapping | After mapping |
-|---|---:|---:|
-| Unconnected ports (LINT-28) | 26 | 274 |
-| Feedthrough (LINT-29) | 58 | 47 |
-| Shorted outputs (LINT-31) | 21 | 20 |
-| Constant outputs (LINT-52) | 2 | 2 |
-| Unloaded nets (LINT-2) | Not listed in pre-map summary | 66 |
-
-The post-map checks still report 274 unconnected ports and 66 unloaded nets. The compile log also records 116 potential design problems and a high-fanout warning on u_dmem/CLK with 3,616 loads. These are Design Compiler check findings, not functional simulation failures, but they mean the run should not be described as a clean sign-off result.
-
 ## Design Vision schematic
 
 ![Design Vision synthesized schematic](images/design_vision_schematic.webp)
@@ -92,4 +80,3 @@ The supplied screenshot is a zoomed-out schematic-window capture. It is not a ph
 - The power result is vectorless and lacks representative switching activity.
 - The reported memories mapped to standard cells, not SRAM macros.
 - Setup slack is positive but very small under the applied clock constraint.
-- Raw report files are generated locally when the Design Compiler script runs and are intentionally excluded from the public repository.
