@@ -7,7 +7,6 @@ module instruction_mem #(parameter Width = 8, parameter Depth = 1024)(
     output logic [(4*Width)-1:0]  Instr
 );
 
-// قيمة ابتدائية صفر للـ simulation بس (الـ DC بيعرّف SYNTHESIS تلقائياً)
 `ifdef SYNTHESIS
 logic [Width-1:0] instr_mem [Depth-1:0];
 `else
