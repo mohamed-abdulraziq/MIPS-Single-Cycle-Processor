@@ -2,8 +2,8 @@
 //  Single-Cycle MIPS - Top Module
 //==============================================================
 module MIPI_Single_cyc_top #(
-    parameter IMEM_DEPTH = 1024,   
-    parameter DMEM_DEPTH = 1024    
+    parameter IMEM_DEPTH = 1024,   // بالبايت
+    parameter DMEM_DEPTH = 1024    // بالبايت
 )(
     input  logic        CLK,
     input  logic        rst_n,
@@ -40,42 +40,43 @@ logic [31:0] ALUResult, ReadData, Result;
 logic        Zero;
 
 
-// --------------------------------------------------------------
-// Instruction Opcode Type
-// --------------------------------------------------------------
-typedef enum logic [5:0] {
-    OP_R_TYPE = 6'b000000,
-    OP_BEQ   = 6'b000100,
-    OP_ADDI  = 6'b001000,
-    OP_J     = 6'b000010,
-    OP_LW    = 6'b100011,
-    OP_SW    = 6'b101011
-} opcode_t;
+// // --------------------------------------------------------------
+// // Instruction Opcode Type - Waveform Observation
+// // --------------------------------------------------------------
+// typedef enum logic [5:0] {
+//     OP_R_TYPE = 6'b000000,
+//     OP_BEQ   = 6'b000100,
+//     OP_ADDI  = 6'b001000,
+//     OP_J     = 6'b000010,
+//     OP_LW    = 6'b100011,
+//     OP_SW    = 6'b101011
+// } opcode_t;
 
-// --------------------------------------------------------------
-// R-Type Function Type
-// --------------------------------------------------------------
-typedef enum logic [5:0] {
-    FUNCT_ADD  = 6'b100000,
-    FUNCT_SUB  = 6'b100010,
-    FUNCT_MUL  = 6'b011000,
-    FUNCT_DIV  = 6'b011010,
-    FUNCT_AND  = 6'b100100,
-    FUNCT_OR   = 6'b100101,
-    FUNCT_NAND = 6'b100110,
-    FUNCT_NOR  = 6'b100111,
-    FUNCT_XOR  = 6'b100001,
-    FUNCT_XNOR = 6'b100011,
-    FUNCT_EQ   = 6'b101000,
-    FUNCT_GT   = 6'b101010,
-    FUNCT_LT   = 6'b101011
-} funct_t;
+// // --------------------------------------------------------------
+// // R-Type Function Type - Waveform Observation
+// // --------------------------------------------------------------
+// typedef enum logic [5:0] {
+//     FUNCT_ADD  = 6'b100000,
+//     FUNCT_SUB  = 6'b100010,
+//     FUNCT_MUL  = 6'b011000,
+//     FUNCT_DIV  = 6'b011010,
+//     FUNCT_AND  = 6'b100100,
+//     FUNCT_OR   = 6'b100101,
+//     FUNCT_NAND = 6'b100110,
+//     FUNCT_NOR  = 6'b100111,
+//     FUNCT_XOR  = 6'b100001,
+//     FUNCT_XNOR = 6'b100011,
+//     FUNCT_EQ   = 6'b101000,
+//     FUNCT_GT   = 6'b101010,
+//     FUNCT_LT   = 6'b101011
+// } funct_t;
 
-opcode_t Op_Wave;
-funct_t  Funct_Wave;
+// // Typed signals for waveform display
+// opcode_t Op_Wave;
+// funct_t  Funct_Wave;
 
-assign Op_Wave    = opcode_t'(Instr[31:26]);
-assign Funct_Wave = funct_t'(Instr[5:0]);
+// assign Op_Wave    = opcode_t'(Instr[31:26]);
+// assign Funct_Wave = funct_t'(Instr[5:0]);
 
 
 //--------------------------------------------------------------

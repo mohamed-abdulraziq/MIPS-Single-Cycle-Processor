@@ -102,7 +102,7 @@ Unsupported R-type function codes do not enable register write-back. Writes to r
 
 ## Functional verification
 
-The active testbench is tb_MIPS_extensive in [verification/tb_MIPS_extensive.sv](verification/tb_MIPS_extensive.sv). It loads the program while reset is asserted, releases reset, observes execution, and checks register-file/data-memory state and runtime control behavior.
+The active testbench is tb_MIPS_extensive in [verification/tb_MIPS_top.sv](verification/tb_MIPS_top.sv). It loads the program while reset is asserted, releases reset, observes execution, and checks register-file/data-memory state and runtime control behavior.
 
 ### Recorded QuestaSim result
 
@@ -155,7 +155,7 @@ vlog -sv rtl/ALSU.sv rtl/MUX.sv rtl/sign_extend.sv \
      rtl/PC_cntrl.sv rtl/PC_plus4.sv rtl/Reg_file.sv \
      rtl/Data_mem.sv rtl/instruction_mem.sv \
      rtl/control_unit.sv rtl/MIPI_Single_cyc_top.sv \
-     verification/tb_MIPS_extensive.sv
+     verification/tb_MIPS_top.sv
 vsim work.tb_MIPS_extensive
 do verification/wave.do
 run -all

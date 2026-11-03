@@ -6,6 +6,7 @@ module Data_mem #(parameter Width = 8, parameter Depth = 1024)(
     output logic [(4*Width)-1:0]   RD
 );
 
+// قيمة ابتدائية صفر للـ simulation بس (الـ DC بيعرّف SYNTHESIS تلقائياً)
 `ifdef SYNTHESIS
 logic [Width-1:0] data_mem [Depth-1:0];
 `else
@@ -15,7 +16,7 @@ logic [Width-1:0] data_mem [Depth-1:0] = '{default: '0};
 //Asynch read
 assign RD = {data_mem[A+3],data_mem[A+2],data_mem[A+1],data_mem[A]};
 
-//Synch write
+//Synch write  (كان بيستخدم WA غير معرّف، والصح A)
 always_ff @(posedge CLK) begin
     if (WE) begin
         {data_mem[A+3],data_mem[A+2],data_mem[A+1],data_mem[A]} <= WD;

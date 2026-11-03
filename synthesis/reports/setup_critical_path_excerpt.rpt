@@ -1,0 +1,17 @@
+Design Compiler setup-path excerpt
+Design: MIPI_Single_cyc_top_IMEM_DEPTH256_DMEM_DEPTH64
+Tool: Synopsys Design Compiler K-2015.06
+Clock: CLK, 166.70 ns
+
+Worst reported setup path:
+  Startpoint: u_pc/PC_out_reg_2_
+  Endpoint:   ALUResult_out[31]
+  Path Group: CLK
+  Path Type:  max
+  Data arrival: 133.020 ns
+  Data required: 133.060 ns
+  Slack: +0.040 ns (MET)
+
+The detailed supplied report shows the path passing through instruction-memory read/decode logic, register-file read logic, and the divider implementation under u_alu/div_29 before reaching ALUResult_out[31].
+
+This is a concise excerpt of the critical-path findings, not a replacement for the complete multi-megabyte setup report. The full report is generated as setup.rpt by synthesis/syn_script_MIPS.tcl when the licensed Design Compiler flow is rerun.
