@@ -21,7 +21,7 @@ A 32-bit **MIPS-like single-cycle processor** implemented in SystemVerilog. The 
 
 ## RTL architecture
 
-![MIPS single-cycle processor RTL architecture](docs/images/architecture_overview.webp)
+![MIPS single-cycle processor RTL architecture](docs/images/architecture_overview.svg)
 
 The diagram shows the processor's major blocks and datapath relationships. The editable diagrams.net source is retained in [docs/architecture/](docs/architecture/). The rendered image above is the direct-view architecture figure; GitHub does not render the Draw.io source as an image.
 
@@ -223,7 +223,7 @@ The raw uploaded reports are preserved under [synthesis/reports/](synthesis/repo
 - [Area report](synthesis/reports/area.rpt)
 - [Standard-cell reference distribution](synthesis/reports/area_cells_by_reference.rpt)
 - [QoR report](synthesis/reports/qor.rpt)
-- [Setup timing paths](synthesis/reports/setup.rpt)
+- [Setup timing paths](synthesis/reports/setup_critical_path_excerpt.rpt)
 - [Hold timing paths](synthesis/reports/hold.rpt)
 - [Power estimate](synthesis/reports/power.rpt)
 - [Pre-map design check](synthesis/reports/check_design_pre.rpt)
