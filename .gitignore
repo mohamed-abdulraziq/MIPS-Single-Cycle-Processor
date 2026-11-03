@@ -1,0 +1,13 @@
+# Simulator outputs
+work/
+transcript
+vsim.wlf
+*.wlf
+*.vcd
+*.saif
+
+# Logs and generated synthesis outputs
+*.log
+synthesis/results/*
+synthesis/reports/*
+synthesis/MIPS_SINGLE_CYC.svf

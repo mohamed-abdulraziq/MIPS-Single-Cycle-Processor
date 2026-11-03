@@ -1,20 +1,18 @@
 # MIPS Single-Cycle Processor
 
-A 32-bit MIPS-like single-cycle processor implemented in SystemVerilog. The project includes a custom 13-operation ALU/ALSU, register and byte-organized memory interfaces, branch/jump control flow, a self-checking verification environment, and a Synopsys Design Compiler synthesis flow targeting a TSMC 130 nm standard-cell library.
+A 32-bit MIPS-like single-cycle processor implemented in SystemVerilog. The project includes a custom 13-operation ALU/ALSU, register and byte-organized memory interfaces, branch/jump control flow, a self-checking verification environment, and a Synopsys Design Compiler flow targeting a TSMC 130 nm standard-cell library.
 
-> **ISA scope:** This is a MIPS-like processor implementing the instruction subset documented below; it is not a complete implementation of the standard MIPS ISA.
+> **ISA scope:** This is a MIPS-like processor implementing the subset documented below; it is not a complete implementation of the standard MIPS ISA.
 
-## Project ownership and development
+## Design ownership and AI assistance
 
-The RTL architecture, microarchitecture decisions, functional design, verification plan, test scenarios, expected results, and testbench behavior were developed by the project author.
+The processor architecture, microarchitecture, RTL design and implementation, and functional design decisions were entirely developed and written by the project author. The verification plan, test scenarios, expected behavior, and verification intent were also defined by the author.
 
-AI assistance was used after the design and verification work to help with code writing/refinement, formatting, and documentation presentation. It did not originate the architecture, functional design, verification strategy, or test scenarios.
+AI assistance was limited to helping with testbench code writing/refinement and formatting, plus documentation organization and presentation. It did not design or write the processor RTL.
 
-Some source sections are intentionally retained as comments. These include optional waveform-observation declarations and an alternative/commented implementation kept for reference. The commented legacy `tb` block in the testbench is not the active regression; the active self-checking testbench is `tb_MIPS_extensive`. The active RTL modules are the non-commented implementations.
+Some commented source code is intentionally retained, including a legacy testbench module in verification/tb_MIPS_top.sv. The active testbench top is tb_MIPS_extensive. Do not remove commented sections without reviewing their purpose.
 
 ## Architecture
-
-The processor is organized around a 32-bit datapath and a single-cycle control path.
 
 - 32-bit program counter with active-low reset.
 - Byte-wide instruction memory with a 32-bit instruction output.
@@ -26,149 +24,149 @@ The processor is organized around a 32-bit datapath and a single-cycle control p
 - BEQ branch and J jump control flow.
 - Division-by-zero detection suppresses register write-back.
 
-### Datapath building blocks
+The editable architecture source is docs/architecture/Phase1_MIPS_Single_Cycle.drawio. Open it with diagrams.net. RTL is the implementation source of truth.
+
+### RTL modules
 
 | Module | Responsibility |
 |---|---|
-| `MIPI_Single_cyc_top` | Top-level processor integration |
-| `PC_cntrl` | PC register and reset behavior |
-| `PC_plus4` | PC+4, branch-target, and jump-target calculations |
-| `MUX` | Parameterized datapath/PC selection |
-| `sign_ext` | 16-bit immediate sign extension |
-| `Reg_file` | 32 × 32-bit register file |
-| `control_unit` | Main instruction decoder and ALU decoder |
-| `ALSU` | Arithmetic, logic, multiply/divide, and comparison operations |
-| `instruction_mem` | Byte-wide instruction storage and instruction fetch |
-| `Data_mem` | Byte-wide data storage and 32-bit data access |
+| MIPI_Single_cyc_top | Top-level processor integration |
+| PC_cntrl | Program-counter register and reset |
+| PC_plus4 | PC+4 and branch/jump address calculations |
+| MUX | Parameterized datapath selection |
+| sign_ext | Immediate sign extension |
+| Reg_file | 32 × 32-bit register file |
+| control_unit | Instruction and ALU control decoding |
+| ALSU | Arithmetic, logic, multiply/divide, and comparisons |
+| instruction_mem | Byte-wide instruction storage/fetch |
+| Data_mem | Byte-wide data storage/access |
 
-## Supported operations
+## Implemented instruction subset
 
-### R-type ALU functions
+### R-type functions
 
-| Operation | Function |
+| Operation | Function code |
 |---|---|
-| ADD | `100000` |
-| SUB | `100010` |
-| MUL | `011000` |
-| DIV | `011010` |
-| AND | `100100` |
-| OR | `100101` |
-| NAND | `100110` |
-| NOR | `100111` |
-| XOR | `100001` |
-| XNOR | `100011` |
-| EQ | `101000` |
-| GT | `101010` |
-| LT | `101011` |
+| ADD | 100000 |
+| SUB | 100010 |
+| MUL | 011000 |
+| DIV | 011010 |
+| AND | 100100 |
+| OR | 100101 |
+| NAND | 100110 |
+| NOR | 100111 |
+| XOR | 100001 |
+| XNOR | 100011 |
+| EQ | 101000 |
+| GT | 101010 |
+| LT | 101011 |
 
-### Other instruction opcodes
+### Other instructions
 
 | Instruction | Opcode |
 |---|---|
-| BEQ | `000100` |
-| ADDI | `001000` |
-| J | `000010` |
-| LW | `100011` |
-| SW | `101011` |
-
-## Functional safeguards
-
-- **R0 protection:** writes to register zero are blocked.
-- **Unsupported R-type functions:** register write-back is enabled only for the 13 supported function codes.
-- **Division by zero:** the ALSU raises `Division_Error`, produces a zero ALU result, and the top-level logic suppresses register write-back for that instruction.
+| BEQ | 000100 |
+| ADDI | 001000 |
+| J | 000010 |
+| LW | 100011 |
+| SW | 101011 |
 
 ## Verification
 
-The active self-checking testbench is `tb_MIPS_extensive` in `tb_MIPS_top.sv`. The earlier `tb` module at the beginning of that file is fully commented out and is not the regression top.
+The active self-checking testbench is tb_MIPS_extensive in verification/tb_MIPS_top.sv. The file also retains a fully commented legacy tb module; it is not a second active testbench.
 
-The active testbench includes:
+The extensive testbench has storage capacity for 42 instruction words and emits/checks a 41-instruction program. It checks the supported R-type functions, immediate operations, load/store behavior, BEQ and jump control flow, R0 protection, unsupported R-type handling, signed comparisons, and division-by-zero behavior.
 
-- A 41-instruction program loaded into instruction memory while the processor is held in reset.
-- All 13 supported R-type ALU functions.
-- ADDI with positive and negative immediates, including signed-boundary values.
-- Load/store behavior and a data-memory readback check.
-- Taken BEQ and verification that the following instruction is skipped.
-- Jump behavior and verification that the skipped instruction does not write its destination.
-- R0 write protection.
-- Unsupported R-type function write suppression.
-- Division-by-zero detection, zero-result behavior, and write-enable suppression.
-- Signed comparison cases.
-- Runtime monitoring of `Division_Error` and `RegWrite_final`.
-- Final PC/self-loop verification and a global simulation timeout.
+### Run with QuestaSim / ModelSim
 
-**Previously reported simulation result (historical):**
+From the repository root, run the following in the QuestaSim / ModelSim transcript:
 
-| Metric | Reported result |
-|---|---:|
-| Instructions loaded | 41 |
-| Observed cycles | 65 |
-| Checks | 36 |
-| Division-by-zero events | 1 |
-| Errors | 0 |
-| Status | `ALL TESTS PASSED` |
+```tcl
+do verification/run_questa.do
+```
 
-This result was reported from a previous simulation session. It is not represented as a fresh regression run performed during this repository update.
+Or compile and run manually:
 
-## ASIC synthesis
+```tcl
+vlib work
+vlog -sv rtl/ALSU.sv rtl/MUX.sv rtl/sign_extend.sv \
+     rtl/PC_cntrl.sv rtl/PC_plus4.sv rtl/Reg_file.sv \
+     rtl/Data_mem.sv rtl/instruction_mem.sv \
+     rtl/control_unit.sv rtl/MIPI_Single_cyc_top.sv \
+     verification/tb_MIPS_top.sv
+vsim -c tb_MIPS_extensive -do "run -all; quit -f"
+```
 
-The design is intended to be synthesized using Synopsys Design Compiler and a TSMC 130 nm standard-cell library.
+For an interactive waveform session:
 
-### Technology libraries
+```tcl
+vsim work.tb_MIPS_extensive
+do verification/wave_MIPS_extensive.do
+run -all
+```
 
-The previous synthesis setup references:
+**Previously reported simulation evidence:** 41 instructions loaded, 65 observed cycles, 36 checks, one division-by-zero event, zero errors, and ALL TESTS PASSED. This is historical evidence from the supplied simulation transcript, not a fresh run performed while packaging this repository. A concise record is in docs/simulation_results.md.
 
-- SS: `scmetro_tsmc_cl013g_rvt_ss_1p08v_125c.db`
-- TT: `scmetro_tsmc_cl013g_rvt_tt_1p2v_25c.db`
-- FF: `scmetro_tsmc_cl013g_rvt_ff_1p32v_m40c.db`
+## ASIC synthesis — Synopsys Design Compiler
 
-The SS library is the target mapping library; TT and FF are linked, with FF associated as the minimum library. This is not three independent synthesis runs. Proprietary technology libraries are not included.
+The synthesis flow is in synthesis/ and is configured for:
 
-### Previous synthesis run — preliminary baseline
+- Top module: MIPI_Single_cyc_top
+- Clock period: 100 ns (10 MHz)
+- Instruction memory depth: 256 bytes
+- Data memory depth: 64 bytes
+- Target mapping library: TSMC 130 nm SS
+- Linked libraries: SS, TT, and FF; FF is associated as the minimum library
 
-The available Design Compiler log and reports correspond to a **20 ns (50 MHz)** clock constraint. This run did not meet timing.
+The RTL module defaults for memory depth differ from the synthesis elaboration parameters. The script explicitly overrides them to 256 and 64 bytes for this synthesis configuration.
 
-| Metric | Previous reported result |
-|---|---:|
-| Clock constraint | 20 ns (50 MHz) |
-| Critical path length | 21.21 ns |
-| Critical path slack | -5.51 ns |
-| Setup-violating paths | 2,078 |
-| Total cell area | 337,344.60 library area units |
-| Cell count | 32,252 |
-| Dynamic power estimate | 4.6906 mW |
-| Cell leakage power | 239.5997 µW |
+The technology library files are not included. Update LIB_DIR in synthesis/syn_script_MIPS.tcl to match the local installation and confirm that BUFX2M exists in the selected library.
 
-The intended operating target discussed for the project is **6 MHz**, corresponding to approximately **166.667 ns**. A corrected synthesis run with that constraint is pending. The 20 ns run is retained as a preliminary baseline only; its area and power must not be presented as final results for the corrected run because synthesis optimization and mapping may change.
+Run from the repository root:
 
-Power is a vectorless estimate unless representative switching activity is annotated. Library area units are not automatically equivalent to µm². These are synthesis results, not place-and-route or silicon measurements.
+```bash
+dc_shell -f synthesis/syn_script_MIPS.tcl | tee synthesis/syn_MIPS.log
+```
+
+### Essential synthesis reports
+
+The script intentionally generates a concise set of reports:
+
+| Report | Purpose |
+|---|---|
+| check_design_pre.rpt | Design checks before mapping |
+| check_design_post.rpt | Design checks after mapping |
+| check_timing.rpt | Timing setup/constraint sanity |
+| qor.rpt | Overall synthesis QoR summary |
+| area.rpt | Total and hierarchical cell area |
+| area_cells_by_reference.rpt | Mapped cell-type distribution |
+| setup.rpt | Worst setup paths |
+| hold.rpt | Worst hold paths |
+| constraints_violators.rpt | Reported constraint violations |
+| power.rpt | Vectorless power estimate |
+
+Generated netlists, SDC/SDF, reports, logs, and work databases are ignored by Git by default. Add selected final reports to version control only after reviewing them and confirming which run/configuration produced them.
+
+**Interpretation limits:** Power is vectorless unless representative SAIF activity is annotated. Library area units must not be assumed to be µm². Synthesis is not place-and-route; no CTS, routed parasitics, DRC/LVS, GDSII, or silicon measurement is claimed.
+
+## Known design considerations
+
+- Instruction and data memories are RTL byte arrays; no foundry SRAM macro mapping is claimed.
+- The combinational division operator may have substantial area and timing cost.
+- In a single-cycle architecture, the longest combinational instruction path limits the clock frequency.
+- IMEM_DEPTH and DMEM_DEPTH are byte depths.
 
 ## Repository structure
 
 ```text
 .
-├── rtl/                    # SystemVerilog design modules
-├── verification/           # Self-checking testbench and simulator setup
-├── synthesis/              # Design Compiler scripts, constraints, and reports
-├── docs/
-│   ├── architecture/       # Architecture documentation and editable source
-│   └── images/             # Exported architecture figures
-└── README.md
+├── rtl/                    # Synthesizable SystemVerilog modules
+├── verification/           # Testbench and simulator setup
+├── synthesis/              # DC scripts and timing constraints
+└── docs/
+    └── architecture/       # Editable Draw.io architecture source
 ```
-
-## Tools
-
-- SystemVerilog
-- QuestaSim / ModelSim
-- Synopsys Design Compiler
-- TSMC 130 nm standard-cell library
-
-## Scope and limitations
-
-- MIPS-like implemented instruction subset; not full MIPS ISA compatibility.
-- Single-cycle datapath; the combinational division operator and single-cycle critical path can have significant area and timing impact.
-- Instruction and data memories are modeled as RTL byte arrays; foundry SRAM macro inference is not claimed.
-- No Place and Route, Clock Tree Synthesis, physical verification, DRC/LVS, GDSII generation, or silicon measurement is claimed.
 
 ## License
 
-No license has been assigned yet.
+No license has been assigned. Add one only after deciding how the project may be used and redistributed.
