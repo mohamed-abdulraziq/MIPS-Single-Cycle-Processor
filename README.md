@@ -1,6 +1,6 @@
 # MIPS Single-Cycle Processor
 
-A 32-bit **MIPS-like single-cycle processor** implemented in SystemVerilog. The design integrates a custom 13-operation arithmetic/logic unit (ALSU), a 32 × 32-bit register file, byte-organized instruction and data memories, branch/jump control flow, and a self-checking QuestaSim verification environment. The ASIC synthesis flow targets the TSMC CL013G RVT standard-cell library using Synopsys Design Compiler.
+A 32-bit **MIPS-like single-cycle processor** implemented in SystemVerilog. The design integrates a custom 13-operation arithmetic/logic unit (ALSU), a 32 × 32-bit register file, byte-organized instruction and data memories, branch/jump control flow, and a self-checking QuestaSim verification environment. The ASIC synthesis flow targets the TSMC 130nm standard-cell library using Design Compiler.
 
 > **ISA scope:** This project implements the instruction subset documented below. It is not a complete implementation of the standard MIPS ISA.
 
@@ -161,7 +161,7 @@ do verification/wave.do
 run -all
 ~~~
 
-## ASIC synthesis — Synopsys Design Compiler
+## ASIC synthesis - Design Compiler
 
 The latest supplied synthesis evidence corresponds to the following setup:
 
@@ -188,7 +188,7 @@ The latest supplied synthesis evidence corresponds to the following setup:
 | Memory macros / black boxes | 0 |
 | Vectorless total power estimate | 0.8376 mW |
 
-The critical setup path starts at u_pc/PC_out_reg_2_ and ends at ALUResult_out[31]. The supplied timing report shows the path passing through instruction-memory read logic, register-file read logic, and the divider implementation inside ALSU. The +0.040 ns slack is positive but extremely small; the result meets only the recorded 166.7 ns constraint with little margin. It is not evidence of a 50 MHz implementation or post-route timing closure.
+The critical setup path starts at u_pc/PC_out_reg_2_ and ends at ALUResult_out[31]. The supplied timing report shows the path passing through instruction-memory read logic, register-file read logic, and the divider implementation inside ALSU. The +0.040 ns slack is positive but extremely small; the result meets only the recorded 166.7 ns constraint with little margin.
 
 ### Hierarchical area distribution
 
@@ -216,20 +216,6 @@ The instruction and data memories together account for approximately 66.4% of ma
 
 This is a low-effort vectorless synthesis estimate. The report warns that primary inputs and sequential outputs are unannotated; no representative SAIF activity annotation is included. It is not measured silicon power or workload-specific power.
 
-### Design-check findings
-
-The supplied pre-map and post-map Design Compiler reports are both included. Their summary counters are:
-
-| Check counter | Before mapping | After mapping |
-|---|---:|---:|
-| Unconnected ports | 26 | 274 |
-| Feedthrough | 58 | 47 |
-| Shorted outputs | 21 | 20 |
-| Constant outputs | 2 | 2 |
-| Unloaded nets | Not listed in pre-map summary | 66 |
-
-These are Design Compiler lint/check counters, not functional simulation failures. The post-map report still lists 274 unconnected ports and 66 unloaded nets. Therefore, this run must not be described as a clean design-check or sign-off result. The full pre-map and post-map warnings are retained verbatim for review. The synthesis log also reports 116 potential design problems at compile stage and a high-fanout warning on u_dmem/CLK (3,616 loads).
-
 ### Raw synthesis reports
 
 The raw uploaded reports are preserved under [synthesis/reports/](synthesis/reports/):
@@ -248,12 +234,6 @@ The analysis and interpretation are documented in [docs/SYNTHESIS_RESULTS.md](do
 
 ### Run synthesis
 
-Change LIB_DIR in synthesis/syn_script_MIPS.tcl to the local directory containing the licensed TSMC .db files, then run from the repository root:
-
-~~~bash
-dc_shell -f synthesis/syn_script_MIPS.tcl | tee synthesis/reports/syn_MIPS.log
-~~~
-
 The proprietary technology libraries are not included in this repository. The timing constraints are the supplied initial interface assumptions, not constraints derived from a formal external interface specification.
 
 ## Scope and limitations
@@ -263,7 +243,6 @@ The proprietary technology libraries are not included in this repository. The ti
 - MUL and DIV are combinational operations in the shared ALSU.
 - The divider is a significant area contributor and lies on the worst reported setup path.
 - Timing and power values are pre-layout synthesis estimates; no place-and-route, clock-tree synthesis, extracted-parasitic STA, DRC/LVS, GDSII, or silicon measurement is claimed.
-- No license has been assigned to this repository.
 
 ## Repository structure
 
