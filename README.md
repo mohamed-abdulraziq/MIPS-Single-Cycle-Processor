@@ -8,9 +8,7 @@ A 32-bit MIPS-like single-cycle processor implemented in SystemVerilog. The proj
 
 The processor architecture, microarchitecture, RTL design and implementation, and functional design decisions were entirely developed and written by the project author. The verification plan, test scenarios, expected behavior, and verification intent were also defined by the author.
 
-AI assistance was limited to helping with testbench code writing/refinement and formatting, plus documentation organization and presentation. It did not design or write the processor RTL.
-
-Some commented source code is intentionally retained, including a legacy testbench module in verification/tb_MIPS_top.sv. The active testbench top is tb_MIPS_extensive. Do not remove commented sections without reviewing their purpose.
+AI assistance was limited to helping with testbench writing/refinement and formatting, plus documentation organization and presentation. It did not design or write the processor RTL.
 
 ## Architecture
 
@@ -73,7 +71,7 @@ The editable architecture source is docs/architecture/Phase1_MIPS_Single_Cycle.d
 
 ## Verification
 
-The active self-checking testbench is tb_MIPS_extensive in verification/tb_MIPS_top.sv. The file also retains a fully commented legacy tb module; it is not a second active testbench.
+The active self-checking testbench is tb_MIPS_extensive in verification/tb_MIPS_top.sv.
 
 The extensive testbench has storage capacity for 42 instruction words and emits/checks a 41-instruction program. It checks the supported R-type functions, immediate operations, load/store behavior, BEQ and jump control flow, R0 protection, unsupported R-type handling, signed comparisons, and division-by-zero behavior.
 
@@ -112,15 +110,13 @@ run -all
 The synthesis flow is in synthesis/ and is configured for:
 
 - Top module: MIPI_Single_cyc_top
-- Clock period: 100 ns (10 MHz)
+- Clock period: 166.667 ns (6 MHz)
 - Instruction memory depth: 256 bytes
 - Data memory depth: 64 bytes
 - Target mapping library: TSMC 130 nm SS
 - Linked libraries: SS, TT, and FF; FF is associated as the minimum library
 
 The RTL module defaults for memory depth differ from the synthesis elaboration parameters. The script explicitly overrides them to 256 and 64 bytes for this synthesis configuration.
-
-The technology library files are not included. Update LIB_DIR in synthesis/syn_script_MIPS.tcl to match the local installation and confirm that BUFX2M exists in the selected library.
 
 Run from the repository root:
 
@@ -145,7 +141,6 @@ The script intentionally generates a concise set of reports:
 | constraints_violators.rpt | Reported constraint violations |
 | power.rpt | Vectorless power estimate |
 
-Generated netlists, SDC/SDF, reports, logs, and work databases are ignored by Git by default. Add selected final reports to version control only after reviewing them and confirming which run/configuration produced them.
 
 **Interpretation limits:** Power is vectorless unless representative SAIF activity is annotated. Library area units must not be assumed to be µm². Synthesis is not place-and-route; no CTS, routed parasitics, DRC/LVS, GDSII, or silicon measurement is claimed.
 
@@ -166,7 +161,3 @@ Generated netlists, SDC/SDF, reports, logs, and work databases are ignored by Gi
 └── docs/
     └── architecture/       # Editable Draw.io architecture source
 ```
-
-## License
-
-No license has been assigned. Add one only after deciding how the project may be used and redistributed.
