@@ -99,108 +99,13 @@ Unsupported R-type function codes do not enable register write-back. Writes to r
 | ALSU.sv | ALSU | 13 arithmetic/logic/comparison operations |
 | Data_mem.sv | Data_mem | Byte-wide data memory with word access |
 
-## Functional verification
+## Functional verification and simulation
 
-The active testbench is tb_MIPS_extensive in [verification/tb_MIPS_top.sv](verification/tb_MIPS_top.sv). It loads the program while reset is asserted, releases reset, observes execution, and checks register-file/data-memory state and runtime control behavior.
+The self-checking testbench and supplied QuestaSim evidence are documented in [docs/VERIFICATION_RESULTS.md](docs/VERIFICATION_RESULTS.md). This includes the recorded transcript results, waveform evidence, covered scenarios, and execution notes.
 
-### Recorded QuestaSim result
+## ASIC synthesis
 
-![QuestaSim transcript showing the supplied test run passing](docs/images/simulation_transcript.webp)
-
-| Metric | Supplied transcript |
-|---|---:|
-| Instructions loaded | 41 |
-| Observed cycles | 65 |
-| Checks performed | 36 |
-| Divide-by-zero events | 1 |
-| Errors | 0 |
-| Final status | **ALL TESTS PASSED** |
-
-These values are transcribed from the supplied transcript screenshot. The simulation was not rerun during repository packaging.
-
-### Waveform evidence
-
-![QuestaSim waveform of the MIPS processor run](docs/images/questa_waveform.webp)
-
-The waveform captures the fetch/program-flow signals, control outputs, register-file ports, ALSU operands/results, divide-by-zero indication, and data-memory interface. The transcript and self-checking testbench provide the pass/fail evidence.
-
-### Test scenarios
-
-- All 13 supported R-type operations, including signed arithmetic and comparisons.
-- Positive and negative immediate values.
-- Divide-by-zero detection and suppression of destination write-back.
-- Register-zero write protection.
-- Unsupported R-type function suppression.
-- ADDI, LW, and SW operations.
-- Taken and not-taken BEQ paths.
-- Jump target and skipped-instruction behavior.
-- Final PC check at the program self-loop.
-
-See [docs/VERIFICATION_RESULTS.md](docs/VERIFICATION_RESULTS.md) for the testbench map and detailed evidence notes.
-
-### Run with QuestaSim / ModelSim
-
-From the repository root:
-
-~~~tcl
-do verification/run.do
-~~~
-
-For an interactive waveform session:
-
-~~~tcl
-vlib work
-vlog -sv rtl/ALSU.sv rtl/MUX.sv rtl/sign_extend.sv \
-     rtl/PC_cntrl.sv rtl/PC_plus4.sv rtl/Reg_file.sv \
-     rtl/Data_mem.sv rtl/instruction_mem.sv \
-     rtl/control_unit.sv rtl/MIPI_Single_cyc_top.sv \
-     verification/tb_MIPS_top.sv
-vsim work.tb_MIPS_extensive
-do verification/wave.do
-run -all
-~~~
-
-## ASIC synthesis — key results
-
-The latest supplied Design Compiler run used MIPI_Single_cyc_top, IMEM depth 256 bytes, DMEM depth 64 bytes, and a 166.7 ns clock constraint (approximately 6 MHz). The target mapping library was TSMC CL013G RVT SS at 1.08 V / 125 °C.
-
-| Metric | Result |
-|---|---:|
-| Mapped cell area | 358,855.85 library area units |
-| Mapped cells | 25,761 |
-| Critical path | 133.02 ns |
-| Worst setup slack | +0.040 ns |
-| Setup violations / TNS | 0 / 0 |
-| Minimum slack among displayed hold paths | +0.294 ns |
-| Total vectorless power estimate | 0.8376 mW |
-| Memory macros / black boxes | 0 |
-
-**Largest area contributors**
-
-| Block | Cell area | Share |
-|---|---:|---:|
-| Instruction memory | 186,734.06 | 52.0% |
-| ALSU | 65,854.02 | 18.4% |
-| Data memory | 51,764.21 | 14.4% |
-| Register file | 49,932.09 | 13.9% |
-
-The worst setup path starts at the PC register and ends at ALUResult_out[31], passing through instruction-memory read, register-file read, and the divider. The +0.040 ns slack is positive but extremely small; it only meets the supplied 166.7 ns constraint with little margin.
-
-The 0.8376 mW power result is a low-effort vectorless synthesis estimate. Primary inputs and sequential outputs were unannotated, and no representative SAIF activity was supplied. It is not measured silicon or workload-specific power.
-
-**Design-check caution:** the post-map check reports 274 unconnected ports and 66 unloaded nets; the compile log also reports 116 potential design problems and a high-fanout warning on the data-memory clock. This is not a clean sign-off result. See [docs/SYNTHESIS_RESULTS.md](docs/SYNTHESIS_RESULTS.md) for the curated interpretation and limitations.
-
-Raw Design Compiler report files are intentionally **not committed**. They are generated locally by the synthesis script and excluded by .gitignore.
-
-### Run synthesis
-
-Update LIB_DIR in synthesis/syn_script_MIPS.tcl to the local directory containing the licensed TSMC .db files, then run from the repository root:
-
-~~~bash
-dc_shell -f synthesis/syn_script_MIPS.tcl
-~~~
-
-The proprietary technology libraries are not included. This is a pre-layout synthesis result; no place-and-route, extracted-parasitic STA, DRC/LVS, GDSII, or silicon measurement is claimed.
+The curated Synopsys Design Compiler results, including timing, area, power estimates, mapped-memory observations, and limitations, are documented in [docs/SYNTHESIS_RESULTS.md](docs/SYNTHESIS_RESULTS.md).
 
 ## Repository structure
 
